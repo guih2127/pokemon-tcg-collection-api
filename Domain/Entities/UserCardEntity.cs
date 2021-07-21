@@ -11,7 +11,7 @@ namespace pokemonTcgCollectionApi.Domain.Entities
         [Key]
         public int Id { get; set; }
         public string UserId { get; set; }
-        public int CardId { get; set; }
+        public string CardId { get; set; }
 
         public ApplicationUser User { get; set; }
     }

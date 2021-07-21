@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pokemonTcgCollectionApi.Data;
 
-namespace pokemonTcgCollectionApi.Infrastructure.Migrations
+namespace pokemonTcgCollectionApi.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
     partial class ApiDbContextModelSnapshot : ModelSnapshot
@@ -78,17 +78,15 @@ namespace pokemonTcgCollectionApi.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CardId")
-                        .HasColumnType("int");
+                    b.Property<string>("CardId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserCard");
                 });
@@ -131,8 +129,8 @@ namespace pokemonTcgCollectionApi.Infrastructure.Migrations
             modelBuilder.Entity("pokemonTcgCollectionApi.Domain.Entities.UserCardEntity", b =>
                 {
                     b.HasOne("pokemonTcgCollectionApi.Domain.Entities.ApplicationUser", "User")
-                        .WithOne("Cards")
-                        .HasForeignKey("pokemonTcgCollectionApi.Domain.Entities.UserCardEntity", "UserId");
+                        .WithMany("Cards")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });

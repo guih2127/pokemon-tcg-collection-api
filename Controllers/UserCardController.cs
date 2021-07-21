@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using pokemonTcgCollectionApi.Data;
 using pokemonTcgCollectionApi.Domain.Entities;
 using System;
@@ -22,7 +23,7 @@ namespace pokemonTcgCollectionApi.Controllers
         [Authorize]
         [HttpPost]
         [Route("{cardId}")]
-        public async Task<IActionResult> RegisterUserCardAsync(int cardId)
+        public async Task<IActionResult> RegisterUserCardAsync(string cardId)
         {
             try
             {
@@ -35,6 +36,45 @@ namespace pokemonTcgCollectionApi.Controllers
                 return Ok();
             }
             catch (Exception e)
+            {
+                return BadRequest();
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("cards")]
+        public async Task<IActionResult> ListUserCardsAsync()
+        {
+            try
+            {
+                var userId = this.User.Claims.Where(x => x.Type == "Id").FirstOrDefault().Value;
+                var userCards = await _context.UserCards.Where(x => x.UserId == userId).ToListAsync();
+                var userCardsIds = userCards.Select(x => x.CardId);
+
+                return Ok(userCardsIds);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("{cardId}")]
+        public async Task<IActionResult> RemoveUserCardAsync(string cardId)
+        {
+            try
+            {
+                var userId = this.User.Claims.Where(x => x.Type == "Id").FirstOrDefault().Value;
+                var card = await _context.UserCards.Where(x => x.CardId == cardId).FirstOrDefaultAsync();
+                var result = _context.UserCards.Remove(card);
+
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch
             {
                 return BadRequest();
             }

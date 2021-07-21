@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace pokemonTcgCollectionApi.Domain.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public UserCardEntity Cards { get; set; }
+        public List<UserCardEntity> Cards { get; set; }
     }
 }

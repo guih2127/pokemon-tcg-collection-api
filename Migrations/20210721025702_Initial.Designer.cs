@@ -10,7 +10,7 @@ using pokemonTcgCollectionApi.Data;
 namespace pokemonTcgCollectionApi.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20210720142447_Initial")]
+    [Migration("20210721025702_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,8 +80,8 @@ namespace pokemonTcgCollectionApi.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CardId")
-                        .HasColumnType("int");
+                    b.Property<string>("CardId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
